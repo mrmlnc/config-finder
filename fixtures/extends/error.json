@@ -1,0 +1,4 @@
+{
+	"extends": "./four.json",
+	"error": true
+}

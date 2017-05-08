@@ -1,0 +1,13 @@
+fixtures
+typings
+
+src
+
+out/**/*.spec.js
+out/**/*.spec.d.ts
+
+.editorconfig
+.gitignore
+.travis.yml
+tsconfig.json
+tslint.json

@@ -1,0 +1,5 @@
+{
+	"extends": "./two.json",
+	"last": 0,
+	"one": true
+}
