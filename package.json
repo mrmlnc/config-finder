@@ -19,6 +19,7 @@
     "finder",
     "resolve"
   ],
+  "typings": "./out/config-profiler.d.ts",
   "files": [
     "index.js",
     "out"
