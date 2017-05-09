@@ -54,18 +54,6 @@ export interface IOptions {
 	 */
 	transform?: (result: IResult) => IResult;
 	/**
-	 * The name of property in the package.json file.
-	 */
-	packageProp?: string;
-	/**
-	 * Allow to use "extends" property inside config files or settings. Also works with predefined configs.
-	 * For example:
-	 *  - config.json: { "extends": "./base.json", "ok": false }
-	 *  - base.json { "ok": true }
-	 *  - result: { "ok": false }
-	 */
-	extendsProp?: string;
-	/**
 	 * Allow to get path to config from env.
 	 */
 	envVariableName?: string;
@@ -73,4 +61,21 @@ export interface IOptions {
 	 * Allow configs in the HOME directory.
 	 */
 	allowHomeDirectory?: boolean;
+	/**
+	 * Set of field names.
+	 */
+	props?: {
+		/**
+		 * The name of property in the package.json file.
+		 */
+		package?: string;
+		/**
+		 * Allow to use "extends" property inside config files or settings. Also works with predefined configs.
+		 * For example:
+		 *  - config.json: { "extends": "./base.json", "ok": false }
+		 *  - base.json { "ok": true }
+		 *  - result: { "ok": false }
+		 */
+		extends?: string;
+	};
 }

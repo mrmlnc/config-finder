@@ -25,8 +25,8 @@ export function parse(content: string, filepath: string, ctime: number, options:
 	}
 
 	// If it is a "package.json" file then extract config from "packageProp" property
-	if (config && options.packageProp && filepath.endsWith('package.json')) {
-		config = config[options.packageProp];
+	if (config && options.props.package && filepath.endsWith('package.json')) {
+		config = config[options.props.package];
 	}
 
 	if (!config) {

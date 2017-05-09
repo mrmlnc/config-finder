@@ -4,19 +4,26 @@ import * as assert from 'assert';
 
 import * as manager from './options';
 
+import * as Types from '../types';
+
 describe('Managers → Options', () => {
 	describe('.prepare', () => {
-		const makeOptions = (options: object) => {
-			return Object.assign({
+		const makeOptions = (options: Types.IOptions) => {
+			options = Object.assign({
 				settings: null,
 				predefinedConfigs: {},
-				packageProp: null,
 				configFiles: [],
 				useEachParser: false,
-				extendsProp: 'extends',
 				envVariableName: null,
 				allowHomeDirectory: true
 			}, options);
+
+			options.props = Object.assign({
+				package: null,
+				extends: 'extends'
+			}, options.props);
+
+			return options;
 		};
 
 		it('Should work with empty object', () => {
@@ -33,8 +40,8 @@ describe('Managers → Options', () => {
 		});
 
 		it('Should work with defined "packageProp" property', () => {
-			const expected = makeOptions({ packageProp: 'name', configFiles: ['package.json'] });
-			const actual = manager.prepare({ packageProp: 'name' });
+			const expected = makeOptions({ configFiles: ['package.json'], props: { package: 'name' } });
+			const actual = manager.prepare({ props: { package: 'name' } });
 
 			assert.equal(actual.parsers.length, 2);
 

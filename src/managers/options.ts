@@ -9,19 +9,22 @@ export function prepare(options: IOptions): IOptions {
 	options = Object.assign(<IOptions>{
 		settings: null,
 		predefinedConfigs: {},
-		packageProp: null,
 		configFiles: [],
 		parsers: [],
 		useEachParser: false,
 		transform: (value) => value,
-		extendsProp: 'extends',
 		envVariableName: null,
 		allowHomeDirectory: true
 	}, options);
 
+	options.props = Object.assign({
+		package: null,
+		extends: 'extends'
+	}, options.props);
+
 	// If "packageProp" property is defined then check the availability "package.json"
 	// _file in the "configFiles" property
-	if (options.packageProp && options.configFiles.indexOf('package.jgon') === -1) {
+	if (options.props.package && options.configFiles.indexOf('package.jgon') === -1) {
 		options.configFiles.push('package.json');
 	}
 

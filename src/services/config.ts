@@ -37,19 +37,19 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 		const content = await io.readFile(currentPath);
 		const parsedContent = parserService.parse(content, currentPath, stats.ctime.getTime(), options);
 
-		const extendsPath = parsedContent.config[options.extendsProp];
+		const extendsPath = parsedContent.config[options.props.extends];
 
 		cache.set(currentPath, parsedContent);
 
 		// Delete "extends" property for builded config
-		if (options.extendsProp) {
+		if (options.props.extends) {
 			delete parsedContent.config.extends;
 		}
 
 		configs.push(parsedContent.config);
 
 		// Try to find "extends" property
-		if (options.extendsProp && extendsPath) {
+		if (options.props.extends && extendsPath) {
 			// Try to get config from predefined configs
 			const predefinedConfig = options.predefinedConfigs[extendsPath];
 			if (predefinedConfig) {
