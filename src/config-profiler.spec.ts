@@ -28,4 +28,22 @@ describe('ConfigProfiler', () => {
 
 		assert.deepEqual(actual, expected);
 	});
+
+	it('should set new options from getConfig method', async () => {
+		const profiler = new ConfigProfiler('', { configFiles: ['config.json'] });
+
+		const expected = {
+			from: 'tests',
+			config: { from: 'nested/config.json' }
+		};
+
+		const actual = await profiler.getConfig('./fixtures/scanner/nested/index.txt', {
+			transform: (result) => ({
+				from: 'tests',
+				config: result.config
+			})
+		});
+
+		assert.deepEqual(actual, expected);
+	});
 });

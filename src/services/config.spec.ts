@@ -41,7 +41,7 @@ describe('Services → Config', () => {
 		});
 
 		it('Should return config without expand "extends" property', async () => {
-			const options = optionsManager.prepare({ extendsProp: null });
+			const options = optionsManager.prepare({ props: { extends: null } });
 			const filepath = './fixtures/extends/one.json';
 
 			const expected = { extends: './two.json', last: 0, one: true };

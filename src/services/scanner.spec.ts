@@ -108,7 +108,7 @@ describe('Services → Scanner', () => {
 
 		it('Should return config for current file by "packageProp" property in the "package.json"', async () => {
 			const options = optionsManager.prepare({
-				packageProp: 'propertyName'
+				props: { package: 'propertyName' }
 			});
 
 			const expected = {
