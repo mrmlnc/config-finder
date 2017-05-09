@@ -26,6 +26,14 @@ function isPredefinedConfig(predefinedConfigs: object, configName: string): bool
 	return predefinedConfigs.hasOwnProperty(configName);
 }
 
+function hasEnvVariable(options: IOptions): boolean {
+	return options.envVariableName && process.env[options.envVariableName];
+}
+
+function getEnvVariable(options: IOptions): string {
+	return process.env[options.envVariableName];
+}
+
 function linkToHome(filepath: string): string {
 	return pathManager.resolve(null, `~/${filepath}`);
 }
@@ -43,7 +51,7 @@ export async function scan(cache: Cache, cwd: string, filepath: string, options:
 		return configManager.build(ConfigType.Predefined, null, predefinedConfigs[settings], options);
 	}
 
-	// Try to include config by defined filepath in the settings
+	// Try to get config from settings
 	if (settings && isString(settings)) {
 		const configPath = pathManager.resolve(cwd, settings);
 		const config = await configService.include(cache, configPath, options);
@@ -52,10 +60,9 @@ export async function scan(cache: Cache, cwd: string, filepath: string, options:
 		}
 	}
 
-	// Try to use config by env
-	const envProp = options.envVariableName;
-	if (envProp && process.env[envProp]) {
-		const configPath = process.env[envProp];
+	// Try to get config from env
+	if (hasEnvVariable(options)) {
+		const configPath = getEnvVariable(options);
 		const config = await configService.include(cache, configPath, options);
 		if (config) {
 			return configManager.build(ConfigType.File, configPath, config, options);
