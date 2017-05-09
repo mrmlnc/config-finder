@@ -11,8 +11,18 @@ import * as pathManager from '../managers/path';
 
 import { Cache, IOptions } from '../types';
 
+function hasExtendsProperty(config: object, options: IOptions): boolean {
+	return config.hasOwnProperty(options.props.extends);
+}
+
+function getExtendsPath(config: object, options: IOptions): string {
+	return config[options.props.extends];
+}
+
 export async function include(cache: Cache, filepath: string, options: IOptions): Promise<object> {
 	let isStop = false;
+
+	let currentConfig;
 	let currentPath = filepath;
 
 	const stack: object[] = [];
@@ -29,27 +39,24 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 			const cachedConfig = cache.get(currentPath);
 
 			if (cachedConfig.ctime >= stats.ctime.getTime()) {
-				stack.push(cachedConfig.config);
+				currentConfig = cachedConfig;
 			}
 		}
 
-		// Parse content
-		const content = await io.readFile(currentPath);
-		const parsedContent = parserService.parse(content, currentPath, stats.ctime.getTime(), options);
+		// Try to read config from File System
+		if (!currentConfig) {
+			const content = await io.readFile(currentPath);
+			currentConfig = parserService.parse(content, currentPath, stats.ctime.getTime(), options);
 
-		const extendsPath = parsedContent.config[options.props.extends];
-
-		cache.set(currentPath, parsedContent);
-
-		// Delete "extends" property for builded config
-		if (options.props.extends) {
-			delete parsedContent.config.extends;
+			cache.set(currentPath, currentConfig);
 		}
 
-		stack.push(parsedContent.config);
+		stack.push(currentConfig.config);
 
 		// Try to find "extends" property
-		if (options.props.extends && extendsPath) {
+		if (hasExtendsProperty(currentConfig.config, options)) {
+			const extendsPath = getExtendsPath(currentConfig.config, options);
+
 			// Try to get config from predefined configs
 			const predefinedConfig = options.predefinedConfigs[extendsPath];
 			if (predefinedConfig) {
@@ -57,19 +64,27 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 				break;
 			}
 
+			// Resolve path to config for next iteration
 			const currentDir = path.dirname(currentPath);
 			currentPath = pathManager.resolve(currentDir, extendsPath);
+			currentConfig = null;
+
 			continue;
 		}
 
 		isStop = true;
-		break;
+		currentConfig = null;
 	}
 
 	// Build config from dirty configs
-	let buildedConfig = {};
+	let buildedConfig = { extends: null };
 	while (stack.length) {
 		buildedConfig = extend(true, buildedConfig, stack.pop());
+	}
+
+	// Delete "extends" property for builded config
+	if (options.props.extends) {
+		delete buildedConfig.extends;
 	}
 
 	return buildedConfig;
