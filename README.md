@@ -55,6 +55,10 @@ configProfiler.getConfig('./path/to/current/file').then((result) => {
 
 ## API
 
+#### Constructor(workspace: string, options: IOptions)
+
+Create instance of `ConfigProfiler` class.
+
 ```js
 const ConfigProfiler = require('config-profiler');
 const configProfiler = new ConfigProfiler('./path', {});
@@ -68,7 +72,7 @@ Set a new workspace directory path.
 configProfiler.setWorkspace('./path/to/workspace');
 ```
 
-#### setOptions(options)
+#### setOptions(options: IOptions)
 
 Set a new options.
 
@@ -78,7 +82,7 @@ configProfiler.setOptions({
 });
 ```
 
-#### getConfig(filepath, [options]) => Promise
+#### getConfig(filepath, [options: IChangeableOptions]) => Promise
 
 Get config for the current file path.
 
@@ -89,12 +93,17 @@ configProfiler.getConfig('./path/to/workspace/index.txt').then((result) => {
 });
 ```
 
+> **Warning**
+>
+> Here available not all options. See only `IChangeableOptions` options.
+
 ## Options
 
 #### `settings`
 
   * Type: `Object|String`
   * Default: `null`
+  * Available: `IOptions`, `IChangeableOptions`
 
 The settings from the editor or plugin/module options. Can have the object, the name of a predefined config or the path to the config.
 
@@ -116,6 +125,7 @@ The settings from the editor or plugin/module options. Can have the object, the 
 
   * Type: `Object`
   * Default: `{}`
+  * Available: `IOptions`
 
 Predefined configs. Must have the name of the config, which can be called from `options.settings` (as string) or `options.extendsProp` from the `options.settings` (as object) or found config file.
 
@@ -142,6 +152,7 @@ Predefined config will be merged with config from found config file.
 
   * Type: `String[]`
   * Default: `[]`
+  * Available: `IOptions`
 
 The names of the config files that can be used as a configs.
 
@@ -149,6 +160,7 @@ The names of the config files that can be used as a configs.
 
   * Type: `Parser[]`
   * Default: `see below`
+  * Available: `IOptions`
 
 Parsers that will be apply to the found configs. The parser receive the content from the configuration file and returns an object.
 
@@ -176,6 +188,7 @@ interface Parser {
 
   * Type: `Boolean`
   * Default: `false`
+  * Available: `IOptions`, `IChangeableOptions`
 
 Allow to use each parser to config file. Necessary in the case that a single file can have multiple syntaxes. We just ignore the `pattern` property.
 
@@ -183,6 +196,7 @@ Allow to use each parser to config file. Necessary in the case that a single fil
 
   * Type: `Function`
   * Default: `(result) => result`
+  * Available: `IOptions`, `IChangeableOptions`
 
 A function that returns the result. The `result` has the following object:
 
@@ -197,6 +211,7 @@ A function that returns the result. The `result` has the following object:
 
   * Type: `String`
   * Default: `null`
+  * Available: `IOptions`
 
 The name of property in the `package.json` file. If you set this option, we'll look for `package.json` file.
 
@@ -204,6 +219,7 @@ The name of property in the `package.json` file. If you set this option, we'll l
 
   * Type: `String`
   * Default: `extends`
+  * Available: `IOptions`
 
 Allow to use `extends` property in a configuration file or settings to reference to another configuration file or predefined config.
 
@@ -219,6 +235,7 @@ See [`fixtures/extends`](fixtures/extends) directory as an example.
 
   * Type: `String`
   * Default: `null`
+  * Available: `IOptions`
 
 Allow to get the path to the configuration file from environment variable.
 
@@ -226,6 +243,7 @@ Allow to get the path to the configuration file from environment variable.
 
   * Type: `Boolean`
   * Default: `true`
+  * Available: `IOptions`, `IChangeableOptions`
 
 Allow configs in the HOME directory or not.
 
@@ -233,6 +251,7 @@ Allow configs in the HOME directory or not.
 
   * Type: `Boolean`
   * Default: `null`
+  * Available: `IOptions`, `IChangeableOptions`
 
 Merge builded config with passed object.
 

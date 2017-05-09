@@ -3,7 +3,7 @@
 import * as optionsManager from './managers/options';
 import * as scannerService from './services/scanner';
 
-import { IOptions, IResult } from './types';
+import { IOptions, IChangeableOptions, IResult } from './types';
 
 export default class ConfigProfiler {
 	private readonly cache = new Map();
@@ -20,12 +20,8 @@ export default class ConfigProfiler {
 		this.options = optionsManager.prepare(options);
 	}
 
-	public getConfig(filepath: string, options?: IOptions): Promise<IResult> {
-		if (options) {
-			options = optionsManager.merge(this.options, options);
-		} else {
-			options = this.options;
-		}
+	public getConfig(filepath: string, options?: IChangeableOptions): Promise<IResult> {
+		options = !options ? this.options : optionsManager.mergeChangeable(this.options, options);
 
 		return scannerService.scan(this.cache, this.workspace, filepath, options);
 	}

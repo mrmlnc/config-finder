@@ -27,11 +27,31 @@ export interface IParser {
 	parser: Function;
 }
 
-export interface IOptions {
+export interface IChangeableOptions {
 	/**
 	 * For example, editor settings.
 	 */
 	settings?: object | string;
+	/**
+	 * Allow to use each parser to config file.
+	 * Necessary in the case that a single file can have multiple syntaxes.
+	 */
+	useEachParser?: boolean;
+	/**
+	 * A function that returns the result.
+	 */
+	transform?: (result: IResult) => IResult;
+	/**
+	 * Allow configs in the HOME directory.
+	 */
+	allowHomeDirectory?: boolean;
+	/**
+	 * Merge builded config with passed object.
+	 */
+	extendBuildedConfig?: object;
+}
+
+export interface ICoreOptions extends IChangeableOptions {
 	/**
 	 * Predefined configs.
 	 */
@@ -45,22 +65,9 @@ export interface IOptions {
 	 */
 	parsers?: IParser[];
 	/**
-	 * Allow to use each parser to config file.
-	 * Necessary in the case that a single file can have multiple syntaxes.
-	 */
-	useEachParser?: boolean;
-	/**
-	 * A function that returns the result.
-	 */
-	transform?: (result: IResult) => IResult;
-	/**
 	 * Allow to get path to config from env.
 	 */
 	envVariableName?: string;
-	/**
-	 * Allow configs in the HOME directory.
-	 */
-	allowHomeDirectory?: boolean;
 	/**
 	 * Set of field names.
 	 */
@@ -78,8 +85,8 @@ export interface IOptions {
 		 */
 		extends?: string;
 	};
-	/**
-	 * Merge builded config with passed object.
-	 */
-	extendBuildedConfig?: object;
+}
+
+export interface IOptions extends ICoreOptions {
+	// As type :)
 }

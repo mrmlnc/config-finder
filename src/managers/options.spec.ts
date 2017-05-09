@@ -27,21 +27,15 @@ describe('Managers → Options', () => {
 	};
 
 	describe('.merge', () => {
-		it('should merge options', () => {
-			const options = makeOptions({ configFiles: ['file.json'] });
+		it('should merge changeable options', () => {
+			const options = {
+				allowHomeDirectory: false,
+				settings: { ok: true }
+			};
 
-			const expected = makeOptions({
-				configFiles: ['file.json', 'package.json'],
-				props: { package: 'name' }
-			});
+			const expected = makeOptions(options);
 
-			const actual = manager.merge(options, {
-				configFiles: [],
-				parsers: [],
-				props: {
-					package: 'name'
-				}
-			});
+			const actual = manager.mergeChangeable(makeOptions({}), options);
 
 			delete actual.parsers;
 			delete actual.transform;
