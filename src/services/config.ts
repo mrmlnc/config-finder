@@ -15,7 +15,7 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 	let isStop = false;
 	let currentPath = filepath;
 
-	const configs: object[] = [];
+	const stack: object[] = [];
 
 	while (!isStop) {
 		const exists = await io.existsPath(currentPath);
@@ -29,7 +29,7 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 			const cachedConfig = cache.get(currentPath);
 
 			if (cachedConfig.ctime >= stats.ctime.getTime()) {
-				configs.push(cachedConfig.config);
+				stack.push(cachedConfig.config);
 			}
 		}
 
@@ -46,14 +46,14 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 			delete parsedContent.config.extends;
 		}
 
-		configs.push(parsedContent.config);
+		stack.push(parsedContent.config);
 
 		// Try to find "extends" property
 		if (options.props.extends && extendsPath) {
 			// Try to get config from predefined configs
 			const predefinedConfig = options.predefinedConfigs[extendsPath];
 			if (predefinedConfig) {
-				configs.push(predefinedConfig);
+				stack.push(predefinedConfig);
 				break;
 			}
 
@@ -67,11 +67,9 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 	}
 
 	// Build config from dirty configs
-	let i = configs.length - 1;
 	let buildedConfig = {};
-	while (i >= 0) {
-		buildedConfig = extend(true, buildedConfig, configs[i]);
-		i--;
+	while (stack.length) {
+		buildedConfig = extend(true, buildedConfig, stack.pop());
 	}
 
 	return buildedConfig;
