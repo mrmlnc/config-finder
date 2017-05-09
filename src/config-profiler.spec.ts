@@ -28,4 +28,19 @@ describe('ConfigProfiler', () => {
 
 		assert.deepEqual(actual, expected);
 	});
+
+	it('should set new options from getConfig method', async () => {
+		const profiler = new ConfigProfiler('', { configFiles: ['wow.json'] });
+
+		const expected = {
+			from: `${cwd}/fixtures/scanner/nested/config.json`,
+			config: { from: 'nested/config.json' }
+		};
+
+		const actual = await profiler.getConfig('./fixtures/scanner/nested/index.txt', {
+			configFiles: ['config.json']
+		});
+
+		assert.deepEqual(actual, expected);
+	});
 });

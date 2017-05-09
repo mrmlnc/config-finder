@@ -7,25 +7,49 @@ import * as manager from './options';
 import * as Types from '../types';
 
 describe('Managers → Options', () => {
-	describe('.prepare', () => {
-		const makeOptions = (options: Types.IOptions) => {
-			options = Object.assign({
-				settings: null,
-				predefinedConfigs: {},
+	const makeOptions = (options: Types.IOptions) => {
+		options = Object.assign({
+			settings: null,
+			predefinedConfigs: {},
+			configFiles: [],
+			useEachParser: false,
+			envVariableName: null,
+			allowHomeDirectory: true
+		}, options);
+
+		options.props = Object.assign({
+			package: null,
+			extends: 'extends'
+		}, options.props);
+
+		return options;
+	};
+
+	describe('.merge', () => {
+		it('should merge options', () => {
+			const options = makeOptions({ configFiles: ['file.json'] });
+
+			const expected = makeOptions({
+				configFiles: ['file.json', 'package.json'],
+				props: { package: 'name' }
+			});
+
+			const actual = manager.merge(options, {
 				configFiles: [],
-				useEachParser: false,
-				envVariableName: null,
-				allowHomeDirectory: true
-			}, options);
+				parsers: [],
+				props: {
+					package: 'name'
+				}
+			});
 
-			options.props = Object.assign({
-				package: null,
-				extends: 'extends'
-			}, options.props);
+			delete actual.parsers;
+			delete actual.transform;
 
-			return options;
-		};
+			assert.deepEqual(actual, expected);
+		});
+	});
 
+	describe('.prepare', () => {
 		it('Should work with empty object', () => {
 			const expected = makeOptions({});
 

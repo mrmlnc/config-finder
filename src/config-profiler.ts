@@ -22,9 +22,11 @@ export default class ConfigProfiler {
 
 	public getConfig(filepath: string, options?: IOptions): Promise<IResult> {
 		if (options) {
-			this.setOptions(options);
+			options = optionsManager.merge(this.options, options);
+		} else {
+			options = this.options;
 		}
 
-		return scannerService.scan(this.cache, this.workspace, filepath, this.options);
+		return scannerService.scan(this.cache, this.workspace, filepath, options);
 	}
 }
