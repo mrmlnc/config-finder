@@ -229,6 +229,13 @@ Allow to get the path to the configuration file from environment variable.
 
 Allow configs in the HOME directory or not.
 
+#### `extendBuildedConfig`
+
+  * Type: `Boolean`
+  * Default: `null`
+
+Merge builded config with passed object.
+
 ## Changelog
 
 See the [Releases section of our GitHub project](https://github.com/mrmlnc/config-profiler/releases) for changelogs for each release version.

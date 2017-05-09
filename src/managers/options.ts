@@ -38,7 +38,8 @@ export function prepare(options: IOptions): IOptions {
 		useEachParser: false,
 		transform: (value) => value,
 		envVariableName: null,
-		allowHomeDirectory: true
+		allowHomeDirectory: true,
+		extendBuildedConfig: null
 	}, options);
 
 	options.props = Object.assign({

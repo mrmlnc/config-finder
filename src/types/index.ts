@@ -78,4 +78,8 @@ export interface IOptions {
 		 */
 		extends?: string;
 	};
+	/**
+	 * Merge builded config with passed object.
+	 */
+	extendBuildedConfig?: object;
 }

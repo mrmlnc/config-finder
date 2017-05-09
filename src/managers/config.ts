@@ -1,5 +1,7 @@
 'use strict';
 
+import * as extend from 'extend';
+
 import { ConfigType, IConfig, IResult, IOptions } from '../types';
 
 export function prepare(type: ConfigType, path: string, ctime: number, config: object): IConfig {
@@ -15,6 +17,10 @@ export function build(type: ConfigType, path: string, config: object, options: I
 
 	if (type === ConfigType.File) {
 		from = path;
+	}
+
+	if (options.extendBuildedConfig) {
+		config = extend(true, config, options.extendBuildedConfig);
 	}
 
 	return options.transform({ from, config });

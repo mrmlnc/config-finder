@@ -14,7 +14,8 @@ describe('Managers → Options', () => {
 			configFiles: [],
 			useEachParser: false,
 			envVariableName: null,
-			allowHomeDirectory: true
+			allowHomeDirectory: true,
+			extendBuildedConfig: null
 		}, options);
 
 		options.props = Object.assign({

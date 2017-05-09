@@ -4,11 +4,12 @@ import * as assert from 'assert';
 
 import * as manager from './config';
 
-import { ConfigType } from '../types';
+import { ConfigType, IOptions } from '../types';
 
 describe('Managers → Config', () => {
-	const options = {
-		transform: (value) => value
+	const options: IOptions = {
+		transform: (value) => value,
+		extendBuildedConfig: null
 	};
 
 	describe('.prepare', () => {
@@ -53,6 +54,24 @@ describe('Managers → Config', () => {
 			const expected = {
 				from: 'path',
 				config: { ok: true }
+			};
+
+			const actual = manager.build(ConfigType.File, 'path', { ok: true }, options);
+
+			assert.deepEqual(actual, expected);
+		});
+
+		it('Should merge builded config with provided object', () => {
+			const expected = {
+				from: 'path',
+				config: {
+					ok: true,
+					nested: { ok: true }
+				}
+			};
+
+			options.extendBuildedConfig = {
+				nested: { ok: true }
 			};
 
 			const actual = manager.build(ConfigType.File, 'path', { ok: true }, options);
