@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as proxyquire from 'proxyquire';
 
 describe('Managers → Path', () => {
-	let manager;
+	let manager: any;
 
 	const cwd = process.cwd().replace(/\\/g, '/');
 	const resolve = (filepath: string) => path.resolve(filepath).replace(/\\/g, '/');

@@ -8,7 +8,7 @@ function isPackageFile(filepath: string, config: object, options: IOptions): boo
 	return config && options.props.package && filepath.endsWith('package.json');
 }
 
-function getPackageProperty(config: object, options: IOptions): object {
+function getPackageProperty(config: { [prop: string]: any }, options: IOptions): object {
 	return config[options.props.package];
 }
 

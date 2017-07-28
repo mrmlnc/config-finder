@@ -74,7 +74,7 @@ describe('Managers → Options', () => {
 			const expected = makeOptions({});
 			const actual = manager.prepare({
 				parsers: [
-					{ pattern: /test/, parser: (value) => value }
+					{ pattern: /test/, parser: <T>(value: T): T => value }
 				]
 			});
 

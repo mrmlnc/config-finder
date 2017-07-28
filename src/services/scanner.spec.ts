@@ -7,7 +7,7 @@ import * as proxyquire from 'proxyquire';
 import * as optionsManager from '../managers/options';
 
 describe('Services → Scanner', () => {
-	let service;
+	let service: any;
 
 	const cache = new Map();
 	const cwd = process.cwd().replace(/\\/g, '/');
@@ -142,7 +142,7 @@ describe('Services → Scanner', () => {
 				allowHomeDirectory: false
 			});
 
-			const expected = null;
+			const expected: any = null;
 
 			const actual = await service.scan(cache, cwd, 'fixtures/scanner/nested/current/index.txt', options);
 
@@ -154,7 +154,7 @@ describe('Services → Scanner', () => {
 				configFiles: ['config.non-exist.json']
 			});
 
-			const expected = null;
+			const expected: any = null;
 
 			const actual = await service.scan(cache, cwd, 'fixtures/scanner/nested/current/index.txt', options);
 

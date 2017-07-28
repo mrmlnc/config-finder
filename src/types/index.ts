@@ -55,7 +55,7 @@ export interface ICoreOptions extends IChangeableOptions {
 	/**
 	 * Predefined configs.
 	 */
-	predefinedConfigs?: object;
+	predefinedConfigs?: { [prop: string]: any };
 	/**
 	 * The names of the files that can be used as a configs.
 	 */
@@ -87,6 +87,4 @@ export interface ICoreOptions extends IChangeableOptions {
 	};
 }
 
-export interface IOptions extends ICoreOptions {
-	// As type :)
-}
+export type IOptions = ICoreOptions;

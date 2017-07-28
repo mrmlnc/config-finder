@@ -11,15 +11,19 @@ import * as pathManager from '../managers/path';
 
 import { Cache, IOptions } from '../types';
 
+export interface IBuildedConfig {
+	extends: string;
+}
+
 function hasExtendsProperty(config: object, options: IOptions): boolean {
 	return config.hasOwnProperty(options.props.extends);
 }
 
-function getExtendsPath(config: object, options: IOptions): string {
+function getExtendsPath(config: { [prop: string]: any }, options: IOptions): string {
 	return config[options.props.extends];
 }
 
-export async function include(cache: Cache, filepath: string, options: IOptions): Promise<object> {
+export async function include(cache: Cache, filepath: string, options: IOptions): Promise<IBuildedConfig> {
 	let isStop = false;
 
 	let currentConfig;
@@ -77,7 +81,7 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 	}
 
 	// Build config from dirty configs
-	let buildedConfig = { extends: null };
+	let buildedConfig: IBuildedConfig = { extends: null };
 	while (stack.length) {
 		buildedConfig = extend(true, buildedConfig, stack.pop());
 	}

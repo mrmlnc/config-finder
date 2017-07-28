@@ -7,7 +7,7 @@ import * as proxyquire from 'proxyquire';
 import * as optionsManager from '../managers/options';
 
 describe('Services → Config', () => {
-	let service;
+	let service: any;
 
 	const cache = new Map();
 	const cwd = process.cwd().replace(/\\/g, '/');

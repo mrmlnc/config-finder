@@ -16,7 +16,7 @@ describe('Utils → IO', () => {
 		});
 
 		it('should return null', async () => {
-			const expected = null;
+			const expected: any = null;
 			const actual = await io.findUp(['wow.json'], './fixtures/io/nested/current/file.txt', './fixtures/io');
 
 			assert.equal(actual, expected);

@@ -10,7 +10,7 @@ import * as optionsManager from '../managers/options';
 function simpleIniParser(text: string): object {
 	const lines = text.trim().split('\n');
 
-	const config = {};
+	const config: any = {};
 	lines.forEach((line) => {
 		const leftRight = line.split('=');
 

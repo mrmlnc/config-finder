@@ -27,7 +27,7 @@ function isPredefinedConfig(predefinedConfigs: object, configName: string): bool
 }
 
 function hasEnvVariable(options: IOptions): boolean {
-	return options.envVariableName && process.env[options.envVariableName];
+	return Boolean(options.envVariableName) && Boolean(process.env[options.envVariableName]);
 }
 
 function getEnvVariable(options: IOptions): string {
