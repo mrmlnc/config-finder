@@ -1,8 +1,12 @@
 'use strict';
 
+import * as debuglog from 'debug';
+
 import * as configManager from '../managers/config';
 
 import { ConfigType, IConfig, IOptions } from '../types';
+
+const debug = debuglog('config-profiler:services:parser');
 
 function isPackageFile(filepath: string, config: object, options: IOptions): boolean {
 	return config && options.props.package && filepath.endsWith('package.json');
@@ -30,6 +34,9 @@ export function parse(content: string, filepath: string, ctime: number, options:
 
 		try {
 			config = item.parser(content);
+
+			debug(`Founded config was parsed by parser #${i} with the follow pattern: %o`, item.pattern);
+
 			break;
 		} catch (err) {
 			errors.push(err.toString());
