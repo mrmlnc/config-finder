@@ -42,7 +42,8 @@
     "extend": "^3.0.1",
     "locate-path": "^2.0.0",
     "parse-json": "^2.2.0",
-    "require-from-string": "^1.2.1"
+    "require-from-string": "^1.2.1",
+    "tslib": "^1.7.1"
   },
   "scripts": {
     "clean": "rimraf out",
