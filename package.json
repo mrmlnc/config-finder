@@ -1,6 +1,6 @@
 {
   "name": "config-profiler",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Find configuration for the current file from provided path, workspace, package, settings, HOME directory or env variable",
   "license": "MIT",
   "repository": "mrmlnc/config-profiler",
