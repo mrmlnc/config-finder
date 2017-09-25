@@ -19,7 +19,7 @@ function hasExtendsProperty(config: object, options: IOptions): boolean {
 	return config.hasOwnProperty(options.props.extends);
 }
 
-function getExtendsPath(config: { [prop: string]: any }, options: IOptions): string {
+function getExtendsPath(config: Record<string, any>, options: IOptions): string {
 	return config[options.props.extends];
 }
 
