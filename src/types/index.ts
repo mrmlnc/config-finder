@@ -83,6 +83,10 @@ export interface ICoreOptions extends IChangeableOptions {
 		 */
 		extends?: string;
 	};
+	/**
+	 * Allow to use cache for configs.
+	 */
+	cache?: boolean;
 }
 
 export type IOptions = ICoreOptions;

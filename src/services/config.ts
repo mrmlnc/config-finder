@@ -39,7 +39,7 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 
 		// Try to use cached config
 		const stats = await io.statPath(currentPath);
-		if (cache.has(currentPath)) {
+		if (options.cache && cache.has(currentPath)) {
 			const cachedConfig = cache.get(currentPath);
 
 			if (cachedConfig.ctime >= stats.ctime.getTime()) {
@@ -52,7 +52,9 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 			const content = await io.readFile(currentPath);
 			currentConfig = parserService.parse(content, currentPath, stats.ctime.getTime(), options);
 
-			cache.set(currentPath, currentConfig);
+			if (options.cache) {
+				cache.set(currentPath, currentConfig);
+			}
 		}
 
 		stack.push(currentConfig.config);

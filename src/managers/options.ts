@@ -21,7 +21,8 @@ export function prepare(options: IOptions): IOptions {
 		transform: (value) => value,
 		envVariableName: null,
 		allowHomeDirectory: true,
-		extendBuildedConfig: null
+		extendBuildedConfig: null,
+		cache: true
 	}, options);
 
 	options.props = Object.assign({

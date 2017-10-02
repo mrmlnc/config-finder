@@ -9,6 +9,7 @@ import * as Types from '../types';
 describe('Managers → Options', () => {
 	const makeOptions = (options: Types.IOptions) => {
 		options = Object.assign({
+			cache: true,
 			settings: null,
 			predefinedConfigs: {},
 			configFiles: [],
