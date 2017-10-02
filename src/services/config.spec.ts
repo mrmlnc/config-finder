@@ -62,6 +62,28 @@ describe('Services → Config', () => {
 				assert.equal(err.message, `A file that does not exist: ${cwd}/fixtures/config/four.json`);
 			}
 		});
+
+		it('Should return config from package.json by propery', async () => {
+			const options = optionsManager.prepare({ props: { package: 'propertyName' } });
+			const filepath = './fixtures/config/correct-package.json';
+
+			const expected = { ok: true };
+
+			const actual = await service.include(cache, filepath, options);
+
+			assert.deepEqual(actual, expected);
+		});
+
+		it('Should return null for config from package.json if it has no property', async () => {
+			const options = optionsManager.prepare({ props: { package: 'propertyName' } });
+			const filepath = './fixtures/config/broken-package.json';
+
+			const expected: any = null;
+
+			const actual = await service.include(cache, filepath, options);
+
+			assert.equal(actual, expected);
+		});
 	});
 
 });
