@@ -86,7 +86,7 @@ describe('Services → Parser', () => {
 			assert.deepEqual(actual, expected);
 		});
 
-		it('Should trying parse file with each defined parser', async () => {
+		it('Should throw error if no one parser could not parser file', async () => {
 			const options = optionsManager.prepare({
 				useEachParser: true
 			});

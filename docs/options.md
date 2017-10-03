@@ -100,6 +100,13 @@ Use `~` to refer to HOME directory and `./` or `../` to refer to the current wor
 
 See [`fixtures/extends`](../fixtures/extends) directory as an example.
 
+#### `cache`
+
+  * Type: `Boolean`
+  * Default: `true`
+
+Control of cache.
+
 ## IChangeableOptions
 
 #### `settings`

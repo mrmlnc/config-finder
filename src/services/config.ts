@@ -9,7 +9,7 @@ import * as parserService from './parser';
 import * as io from '../utils/io';
 import * as pathManager from '../managers/path';
 
-import { Cache, IOptions } from '../types';
+import { Cache, IOptions, IConfig } from '../types';
 
 export interface IBuildedConfig {
 	extends: string;
@@ -19,14 +19,22 @@ function hasExtendsProperty(config: object, options: IOptions): boolean {
 	return config.hasOwnProperty(options.props.extends);
 }
 
-function getExtendsPath(config: { [prop: string]: any }, options: IOptions): string {
+function getExtendsPath(config: Record<string, any>, options: IOptions): string {
 	return config[options.props.extends];
+}
+
+function isPackageFile(filepath: string, config: object, options: IOptions): boolean {
+	return config && options.props.package && filepath.endsWith('package.json');
+}
+
+function getPackageProperty(config: Record<string, any>, options: IOptions): object {
+	return config[options.props.package];
 }
 
 export async function include(cache: Cache, filepath: string, options: IOptions): Promise<IBuildedConfig> {
 	let isStop = false;
 
-	let currentConfig;
+	let currentConfig: IConfig;
 	let currentPath = filepath;
 
 	const stack: object[] = [];
@@ -39,7 +47,7 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 
 		// Try to use cached config
 		const stats = await io.statPath(currentPath);
-		if (cache.has(currentPath)) {
+		if (options.cache && cache.has(currentPath)) {
 			const cachedConfig = cache.get(currentPath);
 
 			if (cachedConfig.ctime >= stats.ctime.getTime()) {
@@ -52,7 +60,18 @@ export async function include(cache: Cache, filepath: string, options: IOptions)
 			const content = await io.readFile(currentPath);
 			currentConfig = parserService.parse(content, currentPath, stats.ctime.getTime(), options);
 
-			cache.set(currentPath, currentConfig);
+			// If it is a "package.json" file then extract config from "packageProp" property
+			if (isPackageFile(filepath, currentConfig, options)) {
+				currentConfig.config = getPackageProperty(currentConfig.config, options);
+
+				if (!currentConfig.config) {
+					return null;
+				}
+			}
+
+			if (options.cache) {
+				cache.set(currentPath, currentConfig);
+			}
 		}
 
 		stack.push(currentConfig.config);

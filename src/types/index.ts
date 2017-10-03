@@ -12,9 +12,7 @@ export interface IConfig {
 	path: string;
 	ctime: number;
 	type: ConfigType;
-	config: {
-		[prop: string]: any
-	};
+	config: Record<string, any>;
 }
 
 export interface IResult {
@@ -55,7 +53,7 @@ export interface ICoreOptions extends IChangeableOptions {
 	/**
 	 * Predefined configs.
 	 */
-	predefinedConfigs?: { [prop: string]: any };
+	predefinedConfigs?: Record<string, any>;
 	/**
 	 * The names of the files that can be used as a configs.
 	 */
@@ -85,6 +83,10 @@ export interface ICoreOptions extends IChangeableOptions {
 		 */
 		extends?: string;
 	};
+	/**
+	 * Allow to use cache for configs.
+	 */
+	cache?: boolean;
 }
 
 export type IOptions = ICoreOptions;

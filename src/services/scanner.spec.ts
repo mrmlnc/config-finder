@@ -149,6 +149,19 @@ describe('Services → Scanner', () => {
 			assert.deepEqual(actual, expected);
 		});
 
+		it('Should return null, because package.json has no property', async () => {
+			const options = optionsManager.prepare({
+				cache: false,
+				props: { package: 'nonExistsPropertyName' }
+			});
+
+			const expected: any = null;
+
+			const actual = await service.scan(cache, cwd, 'fixtures/scanner/nested/current/index.txt', options);
+
+			assert.equal(actual, expected);
+		});
+
 		it('Should return null', async () => {
 			const options = optionsManager.prepare({
 				configFiles: ['config.non-exist.json']
